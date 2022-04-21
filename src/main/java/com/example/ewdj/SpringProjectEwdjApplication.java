@@ -2,6 +2,9 @@ package com.example.ewdj;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
+import service.VoetbalServiceImpl;
 
 @SpringBootApplication
 public class SpringProjectEwdjApplication {
@@ -10,4 +13,9 @@ public class SpringProjectEwdjApplication {
 		SpringApplication.run(SpringProjectEwdjApplication.class, args);
 	}
 
+	@Bean
+	public VoetbalServiceImpl voetbalServiceImpl()
+	{
+		return new VoetbalServiceImpl();
+	}
 }
