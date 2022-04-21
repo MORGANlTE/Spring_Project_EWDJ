@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import service.VoetbalServiceImpl;
+import validator.BestellingValidation;
 
 @SpringBootApplication
 public class SpringProjectEwdjApplication {
@@ -17,5 +18,11 @@ public class SpringProjectEwdjApplication {
 	public VoetbalServiceImpl voetbalServiceImpl()
 	{
 		return new VoetbalServiceImpl();
+	}
+	
+	@Bean
+	public BestellingValidation bestellingValidation()
+	{
+		return new BestellingValidation();
 	}
 }

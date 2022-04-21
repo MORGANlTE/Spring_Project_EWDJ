@@ -2,9 +2,11 @@ package service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import domain.Wedstrijd;
 import domain.WedstrijdTicket;
@@ -23,7 +25,7 @@ public class VoetbalServiceImpl implements VoetbalService{
 
     public VoetbalServiceImpl() {
         //zonder databank
-        stadiumList = new ArrayList<>(Arrays.asList(new String[]{"Al Bayt Stadium", "Al Thumama Stadium"}));
+        stadiumList = new ArrayList<>(Arrays.asList(new String[]{"Al Bayt Stadium", "Al Thumama Stadium", "Ghelamco Arena"}));
 
         mapWedstrijdById.put("1", new WedstrijdTicket(new Wedstrijd("1", new String[]{"België", "Canada"}, 26, 21), 35));
         mapWedstrijdById.put("2", new WedstrijdTicket(new Wedstrijd("2", new String[]{"Brazilië", "Zwitserland"}, 27, 18), 21));
@@ -33,6 +35,7 @@ public class VoetbalServiceImpl implements VoetbalService{
         mapWedstrijdById.put("6", new WedstrijdTicket(new Wedstrijd("6", new String[]{"Argentinië", "Mexico"}, 30, 18), 10));
         mapWedstrijdById.put("7", new WedstrijdTicket(new Wedstrijd("7", new String[]{"Engeland", "USA"}, 31, 18), 22));
         mapWedstrijdById.put("8", new WedstrijdTicket(new Wedstrijd("8", new String[]{"Nederland", "Qatar"}, 31, 21), 16));
+        mapWedstrijdById.put("9", new WedstrijdTicket(new Wedstrijd("9", new String[]{"Oostenrijk", "Frankrijk"}, 20, 16), 12));
 
 
         mapWedstrijdenByStadium.put(stadiumList.get(0),
@@ -50,11 +53,16 @@ public class VoetbalServiceImpl implements VoetbalService{
             mapWedstrijdById.get("5"),
             mapWedstrijdById.get("8")
         })));
+        
+        mapWedstrijdenByStadium.put(stadiumList.get(2),
+                new ArrayList<>(Arrays.asList(new WedstrijdTicket[]{
+            mapWedstrijdById.get("9")
+        })));
 
     }
 
     public List<String> getStadiumList() {
-        return stadiumList;
+        return Collections.unmodifiableList(stadiumList);
     }
 
     //geeft de lijst "tickets per wedstrijden" terug volgens stadium
@@ -71,4 +79,14 @@ public class VoetbalServiceImpl implements VoetbalService{
         WedstrijdTicket wedstrijdTicket = mapWedstrijdById.get(id);
         return wedstrijdTicket.ticketsKopen(teBestellen);
     }
+
+	//geeft stadium terug
+	public String getStadium(String id) {
+    	String stadium = getStadiumList().stream().filter(
+    			stad -> {
+    				return getWedstrijdenByStadium(stad).contains(getWedstrijd(id));
+    			}
+    			).collect(Collectors.toList()).get(0);
+		return stadium;
+	}
 }

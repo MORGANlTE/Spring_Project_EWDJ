@@ -7,7 +7,8 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<spring:url value="/css/style.css" var="urlCss"/>
+<spring:url value="resources/css/style.css" var="urlCss"/>
+<link rel="STYLESHEET" href="${urlCss}" type="text/css" /> 
 <title>Wedstrijden ${stadium}</title>
 </head>
 <body>
@@ -27,7 +28,7 @@
 		<% int teller = 1; %>
 			<c:forEach var="ticket" items="${tickets}">
 			<tr>
-				<td><a href=""><%= teller%></a></td>
+				<td><a href="/fifa/${ticket.getWedstrijd().getId()}"><%= teller%></a></td>
 				<td>${ticket.getWedstrijd().getLanden()[0]} - ${ticket.getWedstrijd().getLanden()[1]}</td>
 				<td>${ticket.getWedstrijd().getDag()} November</td>
 				<td>${ticket.getWedstrijd().getUur()}</td>

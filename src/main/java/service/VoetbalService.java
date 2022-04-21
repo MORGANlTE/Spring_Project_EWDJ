@@ -14,4 +14,5 @@ public interface VoetbalService {
 
 	public int ticketsBestellen(String id, int teBestellen);
 
+	public String getStadium(String id);
 }
