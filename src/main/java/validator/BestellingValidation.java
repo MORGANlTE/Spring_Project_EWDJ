@@ -27,6 +27,11 @@ public class BestellingValidation implements Validator{
 		{
 			errors.rejectValue("ticketAantal", "notValid.bestelling.tooLittle","aantal tickets moet groter zijn of gelijk aan 1");
 		}
+		if (bestelling.getVoetbalCode1() >= bestelling.getVoetbalCode2())
+		{
+			errors.rejectValue("voetbalCode1", "notValid.bestelling.voetbalcodes","voetbalcode1 moet kleiner zijn dan voetbalcode2");
+		}
+		
 	}
 
 }

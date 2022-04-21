@@ -22,6 +22,8 @@
 			<td>email:</td>
 			<td>
 				<form:input path="email" size="20" />
+			</td>
+			<td>
 				<form:errors path="email" cssClass="error"/>
 			</td>
 		</tr>
@@ -29,6 +31,8 @@
 			<td>aantal tickets:</td>
 			<td>
 				<form:input path="ticketAantal" size="20" />
+			</td>
+			<td>
 				<form:errors path="ticketAantal" cssClass="error"/>
 			</td>
 		</tr>
@@ -36,6 +40,8 @@
 			<td>voetbalCode1:</td>
 			<td>			
 				<form:input path="voetbalCode1" size="20" />
+			</td>
+			<td>
 				<form:errors path="voetbalCode1" cssClass="error"/>
 			</td>
 		</tr>
@@ -43,6 +49,9 @@
 			<td>voetbalCode2:</td>
 			<td>			
 				<form:input path="voetbalCode2" size="20" />
+
+			</td>
+			<td>
 				<form:errors path="voetbalCode2" cssClass="error"/>
 			</td>
 		</tr>

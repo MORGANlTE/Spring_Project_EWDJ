@@ -88,7 +88,11 @@ public class HomePaginaController{
 
 			return "matchTickets";
         }
-        return "homePage";
+		else {
+	    	List<String> stadiums = voetbalServiceImpl.getStadiumList();
+	    	model.addAttribute("stadiums", stadiums);
+			return "homePage";
+		}
     }
 	
 	
