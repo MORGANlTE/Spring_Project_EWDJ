@@ -13,6 +13,7 @@ public class EmailConstraintValidator
     public boolean isValid(String value, 
                                  ConstraintValidatorContext context) {
         
-        return (value.contains("@"));
+        return (value.contains("@") || value.isBlank());
+        //als het leeg is, krijg je andere foutmelding! Dus daarom mag het hier wel. Voorlopig enkel geldig email als er een @ in zit.
     }
 }

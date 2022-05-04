@@ -30,3 +30,20 @@ h1{
 span{
     display: table-cell;
 }
+
+input{
+	background-color: darkseagreen;
+	color: black;
+}
+
+input:hover{
+	background-color: darkcyan;
+}
+
+.lijst td{
+	padding-right:20px;
+	text-align: center;
+}
+td{
+	text-align: right;
+}

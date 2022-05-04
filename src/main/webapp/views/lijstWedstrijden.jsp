@@ -14,7 +14,7 @@
 <body>
 	<h1>FIFA World Cup Qatar 2022</h1>
 	<h2>Stadion: ${stadium}</h2>
-	<table>
+	<table class="lijst">
 		<thead>
 			<tr>
 				<td>Nr</td>
@@ -31,12 +31,16 @@
 				<td><a href="/fifa/${ticket.getWedstrijd().getId()}"><%= teller%></a></td>
 				<td>${ticket.getWedstrijd().getLanden()[0]} - ${ticket.getWedstrijd().getLanden()[1]}</td>
 				<td>${ticket.getWedstrijd().getDag()} November</td>
-				<td>${ticket.getWedstrijd().getUur()}</td>
+				<td>${ticket.getWedstrijd().getUur()}:00</td>
 				<td>${ticket.getTickets()}</td>
 			</tr>
 			<%teller = teller+1; %>
 			</c:forEach>
 		</tbody>
 	</table>
+	<form action='logout' method='post'>
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	<input type="submit" value="Afmelden" />
+	</form>
 </body>
 </html>
