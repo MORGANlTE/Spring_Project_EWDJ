@@ -31,6 +31,7 @@ import domain.Bestelling;
 import domain.Wedstrijd;
 import domain.WedstrijdTicket;
 import service.VoetbalServiceImpl;
+import service.WedstrijdDao;
 import utility.Message;
 import validator.BestellingValidation;
 
@@ -42,15 +43,29 @@ public class HomePaginaController{
 	
 	@Autowired
 	private VoetbalServiceImpl voetbalServiceImpl;
-
-	private WedstrijdTicket tempTicket;
-	private String tempId;
+	
 	
 	@Autowired
 	private BestellingValidation bestellingValidation;
-       
+	
+    @Autowired
+    private WedstrijdDao wedstrijdDao;
+    
     @GetMapping
     public String showHomePage(Model model, @RequestParam(required = false) String verkocht, @RequestParam(required = false) String uitverkocht) {
+//    	model.addAttribute("wedstrijdDao", wedstrijdDao.findAll());
+//        
+//        wedstrijdDao.insert(new Wedstrijd(new String[]{"België", "Canada"}, 26, 21, "Al Bayt Stadium", 35));
+//        wedstrijdDao.insert(new Wedstrijd(new String[]{"Brazilië", "Zwitserland"}, 27, 18, "Al Bayt Stadium", 21));
+//        wedstrijdDao.insert(new Wedstrijd(new String[]{"Marroko", "Kroatië"}, 28, 15, "Al Bayt Stadium", 5));
+//        wedstrijdDao.insert(new Wedstrijd(new String[]{"Spanje", "Duitsland"}, 28, 18, "Al Bayt Stadium", 95));
+//        wedstrijdDao.insert(new Wedstrijd(new String[]{"Frankrijk", "Denemarken"}, 30, 15, "Al Thumama Stadium", 45));
+//        wedstrijdDao.insert(new Wedstrijd(new String[]{"Argentinië", "Mexico"}, 30, 18, "Al Bayt Stadium", 10));
+//        wedstrijdDao.insert(new Wedstrijd(new String[]{"Engeland", "USA"}, 31, 18, "Al Bayt Stadium", 22));
+//        wedstrijdDao.insert(new Wedstrijd(new String[]{"Nederland", "Qatar"}, 31, 21, "Al Thumama Stadium",  16));
+//        wedstrijdDao.insert(new Wedstrijd(new String[]{"Oostenrijk", "Frankrijk"}, 20, 16, "Ghelamco Arena", 12));
+
+
     	List<String> stadiums = voetbalServiceImpl.getStadiumList();
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     	ArrayList<String> rollen = new ArrayList<>();
@@ -85,18 +100,16 @@ public class HomePaginaController{
     	
     	model.addAttribute("id", id);
     	
-    	WedstrijdTicket ticket = voetbalServiceImpl.getWedstrijd(id);
-    	tempTicket = ticket;
-    	tempId = id;
+    	Wedstrijd wedstrijd = wedstrijdDao.get(Long.parseLong(id));
     	String stadium = voetbalServiceImpl.getStadium(id);
-    	if (ticket.uitverkocht())
+    	if (wedstrijd.uitverkocht())
     	{
         	List<String> stadiums = voetbalServiceImpl.getStadiumList();
 	    	model.addAttribute("stadiums", stadiums);
     		return "redirect:/fifa?uitverkocht";
     	}
     	model.addAttribute("stadium", stadium);
-    	model.addAttribute("ticket", ticket);
+    	model.addAttribute("wedstrijd", wedstrijd);
     	model.addAttribute("id", id);
     	model.addAttribute("bestelling", new Bestelling());
 
@@ -107,9 +120,10 @@ public class HomePaginaController{
 	public String onSubmit(@RequestParam("stadium") String stadium, Model model)
 	{
 		model.addAttribute("stadium", stadium);
-		List<WedstrijdTicket> tickets = voetbalServiceImpl.getWedstrijdenByStadium(stadium);
+		//List<WedstrijdTicket> tickets = voetbalServiceImpl.getWedstrijdenByStadium(stadium);
 
-		model.addAttribute("tickets", tickets);
+
+		model.addAttribute("wedstrijden", wedstrijdDao.getWedstrijdByStadium(stadium));
 		return "lijstWedstrijden";
 	}
 	
@@ -122,21 +136,24 @@ public class HomePaginaController{
         {
 	    	
 	    	model.addAttribute("id", id);
-	    	WedstrijdTicket ticket = voetbalServiceImpl.getWedstrijd(id);
-	    	tempTicket = ticket;
-	    	tempId = id;
-	    	String stadium = voetbalServiceImpl.getStadium(id);
-	    	model.addAttribute("stadium", stadium);
-	    	model.addAttribute("ticket", ticket);
+	    	Wedstrijd w = wedstrijdDao.findAll().get(Integer.parseInt(id)-1);
+	    	
+
+	    	System.out.println(w.getStadium());
+	    	model.addAttribute("stadium", w.getStadium());
+	    	model.addAttribute("wedstrijd", w);
 	    	model.addAttribute("id", id);
-			
+	    	model.addAttribute("bestelling", bestelling);
+	    	
 			return "matchTickets";
         }
 		else {
-	    	List<String> stadiums = voetbalServiceImpl.getStadiumList();
+	    	List<String> stadiums =  wedstrijdDao.getStadiums();
 	    	int aantalTickets = Integer.parseInt(bestelling.getTicketAantal());
 	    	model.addAttribute("stadiums", stadiums);
-	    	int gekochtAantal = voetbalServiceImpl.getWedstrijd(id).ticketsKopen(aantalTickets);
+	    	Wedstrijd dezeWedstrijd = wedstrijdDao.findAll().get(Integer.parseInt(id)-1);
+	    	int gekochtAantal = dezeWedstrijd.ticketsKopen(aantalTickets);
+	    	wedstrijdDao.update(dezeWedstrijd);
 			return "redirect:/fifa?verkocht="+gekochtAantal;
 		}
     }

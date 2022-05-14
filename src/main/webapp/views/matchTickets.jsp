@@ -14,9 +14,9 @@
 <body>
 	<h1>FIFA World Cup Qatar 2022</h1>
 	<h2>Stadion: ${stadium}</h2>
-	<h3>${ticket.getWedstrijd().getLanden()[0]} vs ${ticket.getWedstrijd().getLanden()[1]} op ${ticket.getWedstrijd().getDag()}-11</h3>
-	<h3>aantal tickets beschikbaar: ${ticket.getTickets()}</h3>
-	<form:form method="POST" action="/fifa/${ticket.getWedstrijd().getId()}" modelAttribute="bestelling">
+	<h3>${wedstrijd.getLanden()[0]} vs ${wedstrijd.getLanden()[1]} op ${wedstrijd.getDag()}-11</h3>
+	<h3>aantal tickets beschikbaar: ${wedstrijd.getTickets()}</h3>
+	<form:form method="POST" action="/fifa/${wedstrijd.getId()}" modelAttribute="bestelling">
 	<table>
 		<tr>
 			<td>email:</td>

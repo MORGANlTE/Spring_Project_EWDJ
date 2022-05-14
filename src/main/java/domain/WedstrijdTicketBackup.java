@@ -1,40 +1,13 @@
 package domain;
 
-import java.util.Objects;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
 //Aantal tickets beschikbaar per wedstrijd
-public class WedstrijdTicket{
+public class WedstrijdTicketBackup {
 
-
-	private Wedstrijd wedstrijd; 
+    private Wedstrijd wedstrijd; 
 
     private int tickets; //aantal tickets beschikbaar
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Long id;
-    
-    @Override
-	public int hashCode() {
-		return Objects.hash(id);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		WedstrijdTicket other = (WedstrijdTicket) obj;
-		return Objects.equals(id, other.id);
-	}
-
-	public WedstrijdTicket(Wedstrijd wedstrijd, int tickets) {
+    public WedstrijdTicketBackup(Wedstrijd wedstrijd, int tickets) {
         this.wedstrijd = wedstrijd;
         this.tickets = tickets;
     }

@@ -8,16 +8,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import domain.Wedstrijd;
 import domain.WedstrijdTicket;
 
 public class VoetbalServiceImpl implements VoetbalService{
 
     private List<String> stadiumList = new ArrayList<>();
+    
+    @PersistenceContext private EntityManager em;
 
     //zonder databank
     //--------------------
     //mapWedstrijdenByStadium, per stadium, een lijst van wedstrijden
+    
     private final Map<String, List<WedstrijdTicket>> mapWedstrijdenByStadium = new HashMap<>();
 
     //mapWedstrijdById, per id een wedstrijdTicket
@@ -26,17 +34,16 @@ public class VoetbalServiceImpl implements VoetbalService{
     public VoetbalServiceImpl() {
         //zonder databank
         stadiumList = new ArrayList<>(Arrays.asList(new String[]{"Al Bayt Stadium", "Al Thumama Stadium", "Ghelamco Arena"}));
-
-        mapWedstrijdById.put("1", new WedstrijdTicket(new Wedstrijd("1", new String[]{"België", "Canada"}, 26, 21), 35));
-        mapWedstrijdById.put("2", new WedstrijdTicket(new Wedstrijd("2", new String[]{"Brazilië", "Zwitserland"}, 27, 18), 21));
-        mapWedstrijdById.put("3", new WedstrijdTicket(new Wedstrijd("3", new String[]{"Marroko", "Kroatië"}, 28, 15), 5));
-        mapWedstrijdById.put("4", new WedstrijdTicket(new Wedstrijd("4", new String[]{"Spanje", "Duitsland"}, 28, 18), 95));
-        mapWedstrijdById.put("5", new WedstrijdTicket(new Wedstrijd("5", new String[]{"Frankrijk", "Denemarken"}, 30, 15), 45));
-        mapWedstrijdById.put("6", new WedstrijdTicket(new Wedstrijd("6", new String[]{"Argentinië", "Mexico"}, 30, 18), 10));
-        mapWedstrijdById.put("7", new WedstrijdTicket(new Wedstrijd("7", new String[]{"Engeland", "USA"}, 31, 18), 22));
-        mapWedstrijdById.put("8", new WedstrijdTicket(new Wedstrijd("8", new String[]{"Nederland", "Qatar"}, 31, 21), 16));
-        mapWedstrijdById.put("9", new WedstrijdTicket(new Wedstrijd("9", new String[]{"Oostenrijk", "Frankrijk"}, 20, 16), 12));
-
+        
+//        mapWedstrijdById.put("1", new WedstrijdTicket(new Wedstrijd(1L, new String[]{"België", "Canada"}, 26, 21), 35));
+//        mapWedstrijdById.put("2", new WedstrijdTicket(new Wedstrijd(2L, new String[]{"Brazilië", "Zwitserland"}, 27, 18), 21));
+//        mapWedstrijdById.put("3", new WedstrijdTicket(new Wedstrijd(3L, new String[]{"Marroko", "Kroatië"}, 28, 15), 5));
+//        mapWedstrijdById.put("4", new WedstrijdTicket(new Wedstrijd(4L, new String[]{"Spanje", "Duitsland"}, 28, 18), 95));
+//        mapWedstrijdById.put("5", new WedstrijdTicket(new Wedstrijd(5L, new String[]{"Frankrijk", "Denemarken"}, 30, 15), 45));
+//        mapWedstrijdById.put("6", new WedstrijdTicket(new Wedstrijd(6L, new String[]{"Argentinië", "Mexico"}, 30, 18), 10));
+//        mapWedstrijdById.put("7", new WedstrijdTicket(new Wedstrijd(7L, new String[]{"Engeland", "USA"}, 31, 18), 22));
+//        mapWedstrijdById.put("8", new WedstrijdTicket(new Wedstrijd(8L, new String[]{"Nederland", "Qatar"}, 31, 21), 16));
+//        mapWedstrijdById.put("9", new WedstrijdTicket(new Wedstrijd(9L, new String[]{"Oostenrijk", "Frankrijk"}, 20, 16), 12));
 
         mapWedstrijdenByStadium.put(stadiumList.get(0),
                 new ArrayList<>(Arrays.asList(new WedstrijdTicket[]{

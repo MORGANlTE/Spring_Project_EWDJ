@@ -15,6 +15,18 @@ import org.springframework.format.annotation.NumberFormat.Style;
 import validator.ValidEmail;
 
 public class Bestelling {
+	public final int minAantalTickets = 1;
+	public final int maxAantalTickets = 25;
+	
+	public int getMinAantalTickets() {
+		return minAantalTickets;
+	}
+
+	public int getMaxAantalTickets() {
+		return maxAantalTickets;
+	}
+
+
 	//moet ingevuld zijn
 	//moet geldige email zijn
 	@NotEmpty(message="{validation.email.NotEmpty.message}")
@@ -22,29 +34,21 @@ public class Bestelling {
 	private String email;
 	
 	//minstens 1 max 25
-	@NotEmpty(message="{validation.aantalTickets.NotEmpty.message}")
-	@Pattern(message="{validation.aantalTickets.NaN.message}", regexp = "^\\d+$")
-	@Min(message="{validation.aantalTickets.TooLess.message}", value = 1)
-	@Max(message="{validation.aantalTickets.TooMany.message}", value = 25)
+	//@Pattern(message="{validation.aantalTickets.NaN.message}", regexp = "^\\d+$")
+//	@Max(message="{validation.aantalTickets.TooMany.message}", value = maxAantalTickets)
+//	@Min(message="{validation.aantalTickets.TooLess.message}", value = minAantalTickets)
     private String ticketAantal = "1";
     
 	//
 	
-	@NotEmpty(message="{validation.voetbalCode2.NotEmpty.message}")
-	@Pattern(message="{validation.voetbalCode1.NaN.message}", regexp = "^\\d+$")
+	//@NotEmpty(message="{validation.voetbalCode2.NotEmpty.message}")
+	//@Pattern(message="{validation.voetbalCode1.NaN.message}", regexp = "^\\d+$")
 	private String voetbalCode2 = "20";
 	
-	@NotEmpty(message="{validation.voetbalCode1.NotEmpty.message}")
-	@Pattern(message="{validation.voetbalCode1.NaN.message}", regexp = "^\\d+$")
+	//@NotEmpty(message="{validation.voetbalCode1.NotEmpty.message}")
+	//@Pattern(message="{validation.voetbalCode1.NaN.message}", regexp = "^\\d+$")
 	private String voetbalCode1 = "10";
 	
-	public boolean isValid()
-	{
-		if(Integer.parseInt(voetbalCode2) <= Integer.parseInt(voetbalCode1))
-			return false;
-		return true;
-		
-	}
 
 
 

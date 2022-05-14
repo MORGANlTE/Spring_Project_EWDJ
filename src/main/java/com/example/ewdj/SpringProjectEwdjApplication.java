@@ -6,7 +6,9 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ResourceBundleMessageSource;
 
+import service.JpaWedstrijdDao;
 import service.VoetbalServiceImpl;
+import service.WedstrijdDao;
 import validator.BestellingValidation;
 
 @SpringBootApplication
@@ -33,4 +35,11 @@ public class SpringProjectEwdjApplication {
 		messageSource.setBasename("converter");
 		return messageSource;
 	}
+	
+	@Bean
+	public WedstrijdDao wedstrijdDao()
+	{
+		return new JpaWedstrijdDao();
+	}
+	
 }

@@ -26,13 +26,13 @@
 		</thead>
 		<tbody>
 		<% int teller = 1; %>
-			<c:forEach var="ticket" items="${tickets}">
+			<c:forEach var="wedstrijd" items="${wedstrijden}">
 			<tr>
-				<td><a href="/fifa/${ticket.getWedstrijd().getId()}"><%= teller%></a></td>
-				<td>${ticket.getWedstrijd().getLanden()[0]} - ${ticket.getWedstrijd().getLanden()[1]}</td>
-				<td>${ticket.getWedstrijd().getDag()} November</td>
-				<td>${ticket.getWedstrijd().getUur()}:00</td>
-				<td>${ticket.getTickets()}</td>
+				<td><a href="/fifa/${wedstrijd.getId()}"><%= teller%></a></td>
+				<td>${wedstrijd.getLanden()[0]} - ${wedstrijd.getLanden()[1]}</td>
+				<td>${wedstrijd.getDag()} November</td>
+				<td>${wedstrijd.getUur()}:00</td>
+				<td>${wedstrijd.getTickets()}</td>
 			</tr>
 			<%teller = teller+1; %>
 			</c:forEach>
