@@ -108,12 +108,12 @@ public class HomePaginaControllerTest {
 	//TICKET AANKOPEN:
 	@Test
 	public void testTicketKopen() throws Exception {
-		Wedstrijd w = new Wedstrijd(1L, new String[] { "BelgiÃ«", "Canada" }, 26, 21, "Al Bayt Stadium", 35);
-
-		Mockito.when(wedstrijdDaoMock.get(1L)).thenReturn(w);
-
 		ReflectionTestUtils.setField(controller, "wedstrijdDao", wedstrijdDaoMock);
 		ReflectionTestUtils.setField(controller, "bestellingValidation", validation);
+		
+		Wedstrijd w = new Wedstrijd(1L, new String[] { "België", "Canada" }, 26, 21, "Al Bayt Stadium", 35);
+		Mockito.when(wedstrijdDaoMock.get(1L)).thenReturn(w);
+
 
 		mockMvc.perform(post("/fifa/1").flashAttr("bestelling", new Bestelling("test@gmail.com", "1", "10", "20")))
 		.andExpect(redirectedUrl("/fifa?verkocht=1"))
