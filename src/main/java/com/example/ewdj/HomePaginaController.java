@@ -6,14 +6,8 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,18 +15,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import domain.Bestelling;
 import domain.Wedstrijd;
-import domain.WedstrijdTicket;
 import service.VoetbalServiceImpl;
 import service.WedstrijdDao;
-import utility.Message;
 import validator.BestellingValidation;
 
 //Controller zorgt ervoor dat het gedetecteerd wordt door Spring, requestmapping
@@ -69,19 +59,23 @@ public class HomePaginaController{
     	List<String> stadiums = voetbalServiceImpl.getStadiumList();
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     	ArrayList<String> rollen = new ArrayList<>();
-    	for (GrantedAuthority a : auth.getAuthorities()) {
-    		rollen.add(a.getAuthority());
-		}
-		
-    	String naam = auth.getName();
+    	if (auth != null)
+    	{
+    		for (GrantedAuthority a : auth.getAuthorities()) {
+    			rollen.add(a.getAuthority());
+    		}
+    		
+    		String naam = auth.getName();
+    		model.addAttribute("naam", naam);
+    		model.addAttribute("rollen", rollen);
+    		
+    	}
     	
     	model.addAttribute("stadiums", stadiums);
     	if(verkocht != null)
     		model.addAttribute("verkochteTickets", String.format("%s ticket%s verkocht", verkocht, (Integer.parseInt(verkocht)==1)?"":"s"));
     	if(uitverkocht != null)
     		model.addAttribute("errorBestelling", "De voetbalmatch is uitverkocht!");
-    	model.addAttribute("naam", naam);
-    	model.addAttribute("rollen", rollen);
         return "homePage";
     }
     
@@ -92,7 +86,18 @@ public class HomePaginaController{
     	if(logout!= null) {
     		model.addAttribute("msg", "U bent succesvol afgemeld.");
     	}
-    	return "login";    
+    	return "login";
+    }
+
+    @PostMapping
+    public String onSubmit(@RequestParam("stadium") String stadium, Model model)
+    {
+    	model.addAttribute("stadium", stadium);
+    	//List<WedstrijdTicket> tickets = voetbalServiceImpl.getWedstrijdenByStadium(stadium);
+    	
+    	
+    	model.addAttribute("wedstrijden", wedstrijdDao.getWedstrijdByStadium(stadium));
+    	return "lijstWedstrijden";
     }
     
     @GetMapping("/{id}")
@@ -116,16 +121,6 @@ public class HomePaginaController{
         return "matchTickets";
     }
 
-	@PostMapping
-	public String onSubmit(@RequestParam("stadium") String stadium, Model model)
-	{
-		model.addAttribute("stadium", stadium);
-		//List<WedstrijdTicket> tickets = voetbalServiceImpl.getWedstrijdenByStadium(stadium);
-
-
-		model.addAttribute("wedstrijden", wedstrijdDao.getWedstrijdByStadium(stadium));
-		return "lijstWedstrijden";
-	}
 	
 	@PostMapping("/{id}")
 	public String onSubmitTickets(@Valid Bestelling bestelling, BindingResult result, @PathVariable(value="id") String id, Model model, Locale locale)
@@ -138,8 +133,6 @@ public class HomePaginaController{
 	    	model.addAttribute("id", id);
 	    	Wedstrijd w = wedstrijdDao.findAll().get(Integer.parseInt(id)-1);
 	    	
-
-	    	System.out.println(w.getStadium());
 	    	model.addAttribute("stadium", w.getStadium());
 	    	model.addAttribute("wedstrijd", w);
 	    	model.addAttribute("id", id);

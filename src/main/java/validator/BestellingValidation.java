@@ -26,6 +26,18 @@ public class BestellingValidation implements Validator{
 	private String vb2 = "voetbalCode2";
 	private String ta = "ticketAantal";
 	
+	public static boolean isNumeric(String strNum) {
+	    if (strNum == null) {
+	        return false;
+	    }
+	    try {
+	        double d = Double.parseDouble(strNum);
+	    } catch (NumberFormatException nfe) {
+	        return false;
+	    }
+	    return true;
+	}
+	
 	@Override
 	public void validate(Object target, Errors errors) {
 		Bestelling bestelling = (Bestelling) target;
@@ -33,13 +45,19 @@ public class BestellingValidation implements Validator{
 		try {
 			if(bestelling.getVoetbalCode1().isEmpty())
 				errors.rejectValue(vb1,"validation.voetbalCode1.NotEmpty.message", "not empty");
-			else if (Integer.parseInt(bestelling.getVoetbalCode1()) >= Integer.parseInt(bestelling.getVoetbalCode2()))
+			else if (isNumeric(bestelling.getVoetbalCode1()))
 			{
-				errors.rejectValue(vb1, "validation.voetbalCode1.teGroot.message", "too high");
+				if (Integer.parseInt(bestelling.getVoetbalCode1()) >= Integer.parseInt(bestelling.getVoetbalCode2()))
+				{
+					errors.rejectValue(vb1, "validation.voetbalCode1.teGroot.message", "too high");
+				}
+			}
+			else{
+				errors.rejectValue(vb1, "validation.voetbalCode1.NaN.message","no text");
 			}
 		} catch(NumberFormatException nfe)
 		{
-			errors.rejectValue(vb1, "validation.voetbalCode1.NaN.message","no text");
+			
 		}
 		
 		//voetbalcode2

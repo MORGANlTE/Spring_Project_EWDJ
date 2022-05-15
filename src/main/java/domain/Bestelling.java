@@ -25,6 +25,19 @@ public class Bestelling {
 	public int getMaxAantalTickets() {
 		return maxAantalTickets;
 	}
+	
+	public Bestelling()
+	{
+		
+	}
+	
+	public Bestelling(String email, String ticketAantal, String voetbalCode1, String voetbalCode2) {
+		super();
+		this.email = email;
+		this.ticketAantal = ticketAantal;
+		this.voetbalCode1 = voetbalCode1;
+		this.voetbalCode2 = voetbalCode2;
+	}
 
 
 	//moet ingevuld zijn
