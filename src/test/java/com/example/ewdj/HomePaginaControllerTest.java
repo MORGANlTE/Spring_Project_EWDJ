@@ -1,6 +1,4 @@
 package com.example.ewdj;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -20,7 +18,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -31,11 +28,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import domain.Bestelling;
 import domain.Wedstrijd;
-import domain.WedstrijdTicket;
 import service.VoetbalServiceImpl;
 import service.WedstrijdDao;
 import validator.BestellingValidation;
@@ -46,8 +41,6 @@ import validator.BestellingValidation;
 @SpringBootTest
 @TestInstance(Lifecycle.PER_CLASS)
 public class HomePaginaControllerTest {
-	@Autowired
-	private WebApplicationContext wac;
 	
 	private HomePaginaController controller;
 	private MockMvc mockMvc;

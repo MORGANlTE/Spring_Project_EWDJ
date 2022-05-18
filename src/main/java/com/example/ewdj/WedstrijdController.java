@@ -28,4 +28,13 @@ public class WedstrijdController {
 		landen.add(w.getLanden()[1]);
 		return landen;
 	}
+	
+	@GetMapping(value="/wedstrijdDetail/{id}")
+	public Wedstrijd getWedstrijdDetails(@PathVariable("id") int wedstrijd)
+	{
+		
+		Wedstrijd w = wedstrijdDao.getWedstrijdById(wedstrijd);
+
+		return w;
+	}
 }
