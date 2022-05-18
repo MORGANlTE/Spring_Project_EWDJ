@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -15,6 +17,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import service.VoetbalServiceImpl;
+import service.WedstrijdDao;
+import validator.BestellingValidation;
 
 
 @ExtendWith(SpringExtension.class)
@@ -27,11 +33,21 @@ public class WedstrijdControllerTest {
 	
 	private MockMvc mockMvc;
 
+	private WedstrijdController wedstrijdController; 
+	
+	@Mock
+	private WedstrijdDao wedstrijdDaoMock;
+	
+	@Mock
+	private VoetbalServiceImpl voetbalServiceImpl;
 	
 	@BeforeAll
 	public void before()
 	{
 		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+		MockitoAnnotations.openMocks(this);
+		wedstrijdController = new WedstrijdController();
+		mockMvc = MockMvcBuilders.standaloneSetup(wedstrijdController).build();
 	}
 	
 	//REST TESTEN:
