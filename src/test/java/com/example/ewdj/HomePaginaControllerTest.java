@@ -68,16 +68,7 @@ public class HomePaginaControllerTest {
 		MockitoAnnotations.openMocks(this);
 		controller = new HomePaginaController();
 		mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-		List<Wedstrijd> lijst = new ArrayList<>();
-		Wedstrijd w = new Wedstrijd(1L, new String[] { "BelgiÃ«", "Canada" }, 26, 21, "Al Bayt Stadium", 0);
-		lijst.add(w);
 		
-		Mockito.when(wedstrijdDaoMock.getWedstrijdByStadium(Mockito.anyString())).thenReturn(lijst);
-		Mockito.when(wedstrijdDaoMock.getWedstrijdById(Mockito.anyInt())).thenReturn(w);
-		List<String> eadh = new ArrayList<>();
-		eadh.add("fjdh");
-		eadh.add("dabv");
-		Mockito.when(wedstrijdDaoMock.getStadiums()).thenReturn(eadh);
 	}
 	
 	//HOMEPAGINA TESTEN:
@@ -85,9 +76,10 @@ public class HomePaginaControllerTest {
 	@Test
 	public void testHomePagina() throws Exception{
 		ReflectionTestUtils.setField(controller, "wedstrijdDao", wedstrijdDaoMock);
+		
 		List<String> eadh = new ArrayList<>();
-		eadh.add("fjdh");
-		eadh.add("dabv");
+		eadh.add("Al Bayt Stadium");
+		
 		Mockito.when(wedstrijdDaoMock.getStadiums()).thenReturn(eadh);
 		
 		mockMvc.perform(get("/fifa"))
@@ -167,6 +159,7 @@ public class HomePaginaControllerTest {
 	@WithMockUser(roles = "USER")
 	public void testHomePaginaRolUser() throws Exception{
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		ReflectionTestUtils.setField(controller, "wedstrijdDao", wedstrijdDaoMock);
 		ArrayList<String> rollen = new ArrayList<>();
 		for (GrantedAuthority a : auth.getAuthorities()) {
 			rollen.add(a.getAuthority());
