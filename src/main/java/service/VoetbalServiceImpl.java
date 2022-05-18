@@ -17,6 +17,8 @@ import domain.Wedstrijd;
 import domain.WedstrijdTicket;
 
 public class VoetbalServiceImpl implements VoetbalService{
+	
+	//zelfde als bij VoetbalService commentaar. Als we werken met db data vragen we deze op via de Dao's en niet meer via dit object.
 
 //    private List<String> stadiumList = new ArrayList<>();
 //    

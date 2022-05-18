@@ -31,6 +31,7 @@ public class HomeControllerTest {
 	@BeforeAll
 	public void before()
 	{
+		//gewone setup, geen mocks trainen etc/geen klassen injecten ofzo
 		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 	}
 	

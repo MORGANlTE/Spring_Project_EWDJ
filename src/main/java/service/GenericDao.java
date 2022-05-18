@@ -3,6 +3,7 @@ package service;
 import java.util.List;
 
 public interface GenericDao<T> {
+	//interface dat Wedstrijddao verder gaat uitbreid zelf
 	public List<T> findAll();
 	public T update(T object);
 	public T get(Long id);

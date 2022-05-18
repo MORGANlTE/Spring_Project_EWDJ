@@ -1,3 +1,7 @@
+
+body{
+	font-family: Arial, sans-serif;
+}
 label{
    display: inline-block;
    width: 10em;
@@ -46,4 +50,24 @@ input:hover{
 }
 td{
 	text-align: right;
+}
+
+.Back{
+	background-color: darkseagreen;
+	width: 100px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+  	-webkit-border-radius: 15px;
+  	-moz-border-radius: 15px;
+  	border-radius: 15px;
+  	border: 1px solid #999;
+	color: black;
+	display: block;
+	text-decoration: none;
+	text-align: center;
+	cursor: default;
+}
+
+.Back:hover{
+	background-color: darkcyan;
 }

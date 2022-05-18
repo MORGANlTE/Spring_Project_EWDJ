@@ -42,5 +42,6 @@
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	<input type="submit" value="Afmelden" />
 	</form>
+	<a href="/fifa" class="Back">Ga terug</a>
 </body>
 </html>

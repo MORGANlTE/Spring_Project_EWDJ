@@ -8,6 +8,8 @@ import javax.persistence.PersistenceContext;
 import org.springframework.transaction.annotation.Transactional;
 
 public class GenericDaoJpa<T> implements GenericDao<T> {
+	
+	//effectievere generieke implementatie van de klassen
 
 	private Class<T> type;
 	protected EntityManager em;

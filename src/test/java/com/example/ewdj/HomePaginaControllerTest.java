@@ -45,6 +45,7 @@ public class HomePaginaControllerTest {
 	private HomePaginaController controller;
 	private MockMvc mockMvc;
 	
+	//mocks maken vd verschillende klassen die we gebruiken
 	@Mock
 	private BestellingValidation validation;
 	
@@ -61,7 +62,6 @@ public class HomePaginaControllerTest {
 		MockitoAnnotations.openMocks(this);
 		controller = new HomePaginaController();
 		mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-		
 	}
 	
 	//HOMEPAGINA TESTEN:

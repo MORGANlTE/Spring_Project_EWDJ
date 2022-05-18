@@ -22,6 +22,8 @@ public class Bestelling {
 		return minAantalTickets;
 	}
 
+	//had eerst hier validatie gedaan maar makkelijker via de BestellingValidation in te stellen & te controleren
+	
 	public int getMaxAantalTickets() {
 		return maxAantalTickets;
 	}

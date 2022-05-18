@@ -53,6 +53,7 @@ public class PersistenceJPAConfig {
 	Properties additionalProperties() {
 		Properties properties = new Properties();
 		properties.setProperty("hibernate.hbm2ddl.auto", "validate");
+		//create om aan te maken/validate om te wijzigen maar niet meer aan te maken
 		return properties;
 	}
 }

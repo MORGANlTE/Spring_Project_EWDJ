@@ -13,6 +13,8 @@ import domain.Wedstrijd;
 @Repository("wedstrijdDao")
 public class JpaWedstrijdDao extends GenericDaoJpa<Wedstrijd> implements WedstrijdDao {
 
+	//effectieve queries die je aan de Wedstrijd vraagt om nr de db te versturen
+	
 	@PersistenceContext
 	private EntityManager em;
 	

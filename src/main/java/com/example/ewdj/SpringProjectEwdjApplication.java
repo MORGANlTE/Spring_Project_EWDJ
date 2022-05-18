@@ -24,18 +24,21 @@ public class SpringProjectEwdjApplication {
 		return new VoetbalServiceImpl();
 	}
 	
+	//bean maken van validation
 	@Bean
 	public BestellingValidation bestellingValidation()
 	{
 		return new BestellingValidation();
 	}
 	
+	//talen instellen via dit
 	@Bean MessageSource messageSource() {
 		ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
 		messageSource.setBasename("converter");
 		return messageSource;
 	}
 	
+	//onze wedstrijddao bean instellen
 	@Bean
 	public WedstrijdDao wedstrijdDao()
 	{

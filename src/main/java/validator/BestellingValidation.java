@@ -13,6 +13,8 @@ import domain.Bestelling;
 
 public class BestellingValidation implements Validator{
 	
+	//gaat alles controleren
+	
 	@Autowired
 	private MessageSource messageSource;
 	

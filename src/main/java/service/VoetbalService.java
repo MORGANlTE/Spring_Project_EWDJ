@@ -6,6 +6,8 @@ import domain.Wedstrijd;
 import domain.WedstrijdTicket;
 
 public interface VoetbalService {
+	
+	//deze klasse werd eigenlijk vervangen na de impementatie van de Dao's
 
 //	public List<String> getStadiumList();
 //

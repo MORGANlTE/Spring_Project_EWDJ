@@ -43,6 +43,9 @@ public class HomePaginaController{
     
     @GetMapping
     public String showHomePage(Model model, @RequestParam(required = false) String verkocht, @RequestParam(required = false) String uitverkocht) {
+    	
+    	//data voor in de db als ik de homepagina laad
+    	
 //    	model.addAttribute("wedstrijdDao", wedstrijdDao.findAll());
 //        
 //        wedstrijdDao.insert(new Wedstrijd(new String[]{"België", "Canada"}, 26, 21, "Al Bayt Stadium", 35));
@@ -55,12 +58,16 @@ public class HomePaginaController{
 //        wedstrijdDao.insert(new Wedstrijd(new String[]{"Nederland", "Qatar"}, 31, 21, "Al Thumama Stadium",  16));
 //        wedstrijdDao.insert(new Wedstrijd(new String[]{"Oostenrijk", "Frankrijk"}, 20, 16, "Ghelamco Arena", 12));
 
-
+    	//opvragen stadiums
     	List<String> stadiums = wedstrijdDao.getStadiums();
+    	//security/loginsysteem oproepen
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    	
     	ArrayList<String> rollen = new ArrayList<>();
+    	
     	if (auth != null)
     	{
+    		//als is ingelogd enkel de rechten opvragen voor mee te geven aan de homepagina
     		for (GrantedAuthority a : auth.getAuthorities()) {
     			rollen.add(a.getAuthority());
     		}
@@ -82,6 +89,7 @@ public class HomePaginaController{
     @GetMapping(value = "/login")
     public String login(Model model, Principal principal, @RequestParam(value= "logout", required= false) String logout) 
     {
+    	//afmelden optie
     	model.addAttribute("username", principal.getName());
     	if(logout!= null) {
     		model.addAttribute("msg", "U bent succesvol afgemeld.");
@@ -92,11 +100,12 @@ public class HomePaginaController{
     @PostMapping
     public String onSubmit(@RequestParam("stadium") String stadium, Model model)
     {
+    	//post met jouw stadium nr keuze
     	model.addAttribute("stadium", stadium);
-    	//List<WedstrijdTicket> tickets = voetbalServiceImpl.getWedstrijdenByStadium(stadium);
     	
-    	
+    	//opvragen wedstrijden bij dit stadium
     	model.addAttribute("wedstrijden", wedstrijdDao.getWedstrijdByStadium(stadium));
+    	
     	return "lijstWedstrijden";
     }
     
@@ -105,19 +114,23 @@ public class HomePaginaController{
     	
     	model.addAttribute("id", id);
     	
+    	//wedstrijd opvragen
     	Wedstrijd wedstrijd = wedstrijdDao.get(Long.parseLong(id));
     	String stadium = wedstrijdDao.getStadiumByWedstrijdId(id);
+    	
+    	//als is uitverkocht terugsturen
     	if (wedstrijd.uitverkocht())
     	{
         	List<String> stadiums = wedstrijdDao.getStadiums();
 	    	model.addAttribute("stadiums", stadiums);
     		return "redirect:/fifa?uitverkocht";
     	}
+    	
+    	//anders gaan we instellen van de data & nieuwe bestelling aanmaken vr volgende post te controleren
     	model.addAttribute("stadium", stadium);
     	model.addAttribute("wedstrijd", wedstrijd);
     	model.addAttribute("id", id);
     	model.addAttribute("bestelling", new Bestelling());
-    	System.out.println(wedstrijd.getTickets());
 
         return "matchTickets";
     }
@@ -126,13 +139,17 @@ public class HomePaginaController{
 	@PostMapping("/{id}")
 	public String onSubmitTickets(@Valid Bestelling bestelling, BindingResult result, @PathVariable(value="id") String id, Model model, Locale locale)
 	{
+		//valideren van alle velden: (die niet in Bestelling zelf gecontroleerd worden)
 		bestellingValidation.validate(bestelling, result);
 
 		if (result.hasErrors())
         {
-	    	
+	    	//als er een fout in zat terug alles instellen & opnieuw dezelfde pagina weergeven!
 	    	model.addAttribute("id", id);
+	    	
+	    	//opnieuw wedstrijd opvragen om in te stellen
 	    	Wedstrijd w = wedstrijdDao.getWedstrijdById(Integer.parseInt(id));
+	    	
 	    	model.addAttribute("stadium", w.getStadium());
 	    	model.addAttribute("wedstrijd", w);
 	    	model.addAttribute("id", id);
@@ -141,6 +158,8 @@ public class HomePaginaController{
 			return "matchTickets";
         }
 		else {
+			
+			//anders doorgeven dat het gekocht is & opnieuw hoofdpagina gegevens instellen
 	    	List<String> stadiums =  wedstrijdDao.getStadiums();
 	    	int aantalTickets = Integer.parseInt(bestelling.getTicketAantal());
 	    	
@@ -148,10 +167,8 @@ public class HomePaginaController{
 	    	
 	    	Wedstrijd dezeWedstrijd = wedstrijdDao.getWedstrijdById(Integer.parseInt(id));
 	    	
-	    	System.out.println("wedstrijdtickets: "+ dezeWedstrijd.getTickets());
 	    	
 	    	int gekochtAantal = dezeWedstrijd.ticketsKopen(aantalTickets);
-	    	System.out.println("wedstrijdtickets: "+ dezeWedstrijd.getTickets());
 	    	wedstrijdDao.update(dezeWedstrijd);
 			return "redirect:/fifa?verkocht="+gekochtAantal;
 		}
