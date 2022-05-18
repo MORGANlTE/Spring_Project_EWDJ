@@ -21,7 +21,7 @@ public class WedstrijdController {
 	public List<String> getWedstrijd(@PathVariable("id") int wedstrijd)
 	{
 		
-		Wedstrijd w = wedstrijdDao.findAll().get(wedstrijd-1);
+		Wedstrijd w = wedstrijdDao.getWedstrijdById(wedstrijd);
 		
 		List<String> landen = new ArrayList<>();
 		landen.add(w.getLanden()[0]);
