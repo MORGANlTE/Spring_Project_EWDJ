@@ -8,6 +8,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -53,6 +54,7 @@ public class WedstrijdControllerTest {
 	//REST TESTEN:
 	@Test
 	public void testRestPagina() throws Exception{
+		Mockito.when(wedstrijdDaoMock.getStadiumByWedstrijdId("1")).thenReturn()
 		String data[] = new String[] {"België","Canada"};
 		mockMvc.perform(get("/rest/fifaDetail/1"))
 			.andExpect(status().isOk())
