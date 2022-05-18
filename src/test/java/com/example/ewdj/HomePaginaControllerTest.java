@@ -72,22 +72,29 @@ public class HomePaginaControllerTest {
 		Wedstrijd w = new Wedstrijd(1L, new String[] { "BelgiÃ«", "Canada" }, 26, 21, "Al Bayt Stadium", 0);
 		lijst.add(w);
 		
-		Mockito.when(wedstrijdDaoMock.getWedstrijdByStadium("Al Bayt Stadium")).thenReturn(lijst);
-		Mockito.when(wedstrijdDaoMock.getWedstrijdById(1)).thenReturn(w);
-		List<String> test = new ArrayList<>();
-		test.add("Al Bayt Stadium");
-		Mockito.when(wedstrijdDaoMock.getStadiums()).thenReturn(test);
+		Mockito.when(wedstrijdDaoMock.getWedstrijdByStadium(Mockito.anyString())).thenReturn(lijst);
+		Mockito.when(wedstrijdDaoMock.getWedstrijdById(Mockito.anyInt())).thenReturn(w);
+		List<String> eadh = new ArrayList<>();
+		eadh.add("fjdh");
+		eadh.add("dabv");
+		Mockito.when(wedstrijdDaoMock.getStadiums()).thenReturn(eadh);
 	}
 	
 	//HOMEPAGINA TESTEN:
 	//testen of de homepagina opgevraagd kan worden met bestaande stadiums
 	@Test
 	public void testHomePagina() throws Exception{
+		ReflectionTestUtils.setField(controller, "wedstrijdDao", wedstrijdDaoMock);
+		List<String> eadh = new ArrayList<>();
+		eadh.add("fjdh");
+		eadh.add("dabv");
+		Mockito.when(wedstrijdDaoMock.getStadiums()).thenReturn(eadh);
+		
 		mockMvc.perform(get("/fifa"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("homePage"))
 			.andExpect(model().attributeExists("stadiums"))
-			.andExpect(model().attribute("stadiums", Arrays.asList("Al Bayt Stadium","Al Thumama Stadium","Ghelamco Arena")));
+			.andExpect(model().attribute("stadiums", Arrays.asList("Al Bayt Stadium")));
 	}
 	
 	//als de wedstrijd uitverkocht was testen

@@ -30,6 +30,7 @@ public class GenericDaoJpa<T> implements GenericDao<T> {
 	
 	@Transactional(readOnly = true)
 	public List<T> findAll() {
+		
 		return this.em.createQuery("select entity from " + this.type.getName() + " entity").getResultList();
 	}
 	
