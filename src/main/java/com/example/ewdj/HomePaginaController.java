@@ -56,7 +56,7 @@ public class HomePaginaController{
 //        wedstrijdDao.insert(new Wedstrijd(new String[]{"Oostenrijk", "Frankrijk"}, 20, 16, "Ghelamco Arena", 12));
 
 
-    	List<String> stadiums = voetbalServiceImpl.getStadiumList();
+    	List<String> stadiums = wedstrijdDao.getStadiums();
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     	ArrayList<String> rollen = new ArrayList<>();
     	if (auth != null)
@@ -106,10 +106,10 @@ public class HomePaginaController{
     	model.addAttribute("id", id);
     	
     	Wedstrijd wedstrijd = wedstrijdDao.get(Long.parseLong(id));
-    	String stadium = voetbalServiceImpl.getStadium(id);
+    	String stadium = wedstrijdDao.getStadiumByWedstrijdId(id);
     	if (wedstrijd.uitverkocht())
     	{
-        	List<String> stadiums = voetbalServiceImpl.getStadiumList();
+        	List<String> stadiums = wedstrijdDao.getStadiums();
 	    	model.addAttribute("stadiums", stadiums);
     		return "redirect:/fifa?uitverkocht";
     	}
@@ -117,6 +117,7 @@ public class HomePaginaController{
     	model.addAttribute("wedstrijd", wedstrijd);
     	model.addAttribute("id", id);
     	model.addAttribute("bestelling", new Bestelling());
+    	System.out.println(wedstrijd.getTickets());
 
         return "matchTickets";
     }
@@ -131,8 +132,7 @@ public class HomePaginaController{
         {
 	    	
 	    	model.addAttribute("id", id);
-	    	Wedstrijd w = wedstrijdDao.findAll().get(Integer.parseInt(id)-1);
-	    	
+	    	Wedstrijd w = wedstrijdDao.getWedstrijdById(Integer.parseInt(id));
 	    	model.addAttribute("stadium", w.getStadium());
 	    	model.addAttribute("wedstrijd", w);
 	    	model.addAttribute("id", id);
@@ -143,9 +143,15 @@ public class HomePaginaController{
 		else {
 	    	List<String> stadiums =  wedstrijdDao.getStadiums();
 	    	int aantalTickets = Integer.parseInt(bestelling.getTicketAantal());
+	    	
 	    	model.addAttribute("stadiums", stadiums);
-	    	Wedstrijd dezeWedstrijd = wedstrijdDao.findAll().get(Integer.parseInt(id)-1);
+	    	
+	    	Wedstrijd dezeWedstrijd = wedstrijdDao.getWedstrijdById(Integer.parseInt(id));
+	    	
+	    	System.out.println("wedstrijdtickets: "+ dezeWedstrijd.getTickets());
+	    	
 	    	int gekochtAantal = dezeWedstrijd.ticketsKopen(aantalTickets);
+	    	System.out.println("wedstrijdtickets: "+ dezeWedstrijd.getTickets());
 	    	wedstrijdDao.update(dezeWedstrijd);
 			return "redirect:/fifa?verkocht="+gekochtAantal;
 		}

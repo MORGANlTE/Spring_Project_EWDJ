@@ -22,8 +22,17 @@ import javax.persistence.NamedQuery;
 	query="SELECT w FROM Wedstrijd w WHERE w.stadium = :nameStadium ORDER BY w.id"
 	),
 	
+	@NamedQuery(name = "Wedstrijd.getWedstrijdById",
+	query="SELECT w FROM Wedstrijd w WHERE w.id = :id"
+	),
+	
+	
 	@NamedQuery(name ="Wedstrijd.getStadiums",
 	query = "SELECT DISTINCT stadium FROM Wedstrijd w"
+	),
+	
+	@NamedQuery(name ="Wedstrijd.getStadiumByWedstrijdId",
+	query = "SELECT stadium FROM Wedstrijd w WHERE w.id = :id"
 	)
 })
 public class Wedstrijd implements Serializable{

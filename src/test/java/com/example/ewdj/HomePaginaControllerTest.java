@@ -10,6 +10,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -17,6 +19,7 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.Authentication;
@@ -32,6 +35,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import domain.Bestelling;
 import domain.Wedstrijd;
+import domain.WedstrijdTicket;
+import service.VoetbalServiceImpl;
 import service.WedstrijdDao;
 import validator.BestellingValidation;
 
@@ -52,14 +57,26 @@ public class HomePaginaControllerTest {
 	
 	@Mock
 	private WedstrijdDao wedstrijdDaoMock;
+	
+	@Mock
+	private VoetbalServiceImpl voetbalServiceImpl;
 
 	
 	@BeforeAll
 	public void before()
 	{
+		MockitoAnnotations.openMocks(this);
 		controller = new HomePaginaController();
-		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+		mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+		List<Wedstrijd> lijst = new ArrayList<>();
+		Wedstrijd w = new Wedstrijd(1L, new String[] { "BelgiÃ«", "Canada" }, 26, 21, "Al Bayt Stadium", 0);
+		lijst.add(w);
 		
+		Mockito.when(wedstrijdDaoMock.getWedstrijdByStadium("Al Bayt Stadium")).thenReturn(lijst);
+		Mockito.when(wedstrijdDaoMock.getWedstrijdById(1)).thenReturn(w);
+		List<String> test = new ArrayList<>();
+		test.add("Al Bayt Stadium");
+		Mockito.when(wedstrijdDaoMock.getStadiums()).thenReturn(test);
 	}
 	
 	//HOMEPAGINA TESTEN:
@@ -87,6 +104,7 @@ public class HomePaginaControllerTest {
 	//als de tickets gekocht zijn testen
 	@Test
 	public void testHomePaginaTicketGekocht() throws Exception{
+		
 		mockMvc.perform(get("/fifa").param("verkocht", "12"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("homePage"))
@@ -112,7 +130,7 @@ public class HomePaginaControllerTest {
 		ReflectionTestUtils.setField(controller, "bestellingValidation", validation);
 		
 		Wedstrijd w = new Wedstrijd(1L, new String[] { "België", "Canada" }, 26, 21, "Al Bayt Stadium", 35);
-		Mockito.when(wedstrijdDaoMock.get(1L)).thenReturn(w);
+		Mockito.when(wedstrijdDaoMock.getWedstrijdById(1)).thenReturn(w);
 
 
 		mockMvc.perform(post("/fifa/1").flashAttr("bestelling", new Bestelling("test@gmail.com", "1", "10", "20")))
@@ -126,7 +144,7 @@ public class HomePaginaControllerTest {
 	public void testTicketKopenFaalt() throws Exception {
 		Wedstrijd w = new Wedstrijd(1L, new String[] { "BelgiÃ«", "Canada" }, 26, 21, "Al Bayt Stadium", 0);
 
-		Mockito.when(wedstrijdDaoMock.get(1L)).thenReturn(w);
+		Mockito.when(wedstrijdDaoMock.getWedstrijdById(1)).thenReturn(w);
 
 		ReflectionTestUtils.setField(controller, "wedstrijdDao", wedstrijdDaoMock);
 		ReflectionTestUtils.setField(controller, "bestellingValidation", validation);

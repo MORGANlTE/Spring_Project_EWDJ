@@ -41,5 +41,27 @@ public class JpaWedstrijdDao extends GenericDaoJpa<Wedstrijd> implements Wedstri
 		return queryWedstrijd.getResultList();
 	}
 
+	@Override
+	@Transactional
+	public Wedstrijd getWedstrijdById(int id) {
+		TypedQuery<Wedstrijd> queryWedstrijd = em.createNamedQuery("Wedstrijd.getWedstrijdById"
+				, Wedstrijd.class
+				);
+		String newId = Integer.toString(id);
+		queryWedstrijd.setParameter("id", Long.parseLong(newId));
+		return queryWedstrijd.getResultList().get(0);
+	}
+
+	
+	@Override
+	@Transactional
+	public String getStadiumByWedstrijdId(String id) {
+		TypedQuery<String> queryWedstrijd = em.createNamedQuery("Wedstrijd.getStadiumByWedstrijdId"
+				, String.class
+				);
+		queryWedstrijd.setParameter("id", Long.parseLong(id));
+		return queryWedstrijd.getResultList().get(0);
+	}
+
 
 }
