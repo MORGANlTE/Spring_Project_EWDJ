@@ -94,7 +94,7 @@ public class BestellingValidation implements Validator{
 		} catch(NumberFormatException nfe)
 		{
 			//vertaling niet mogelijk...
-			errors.rejectValue(ta, "{validation.voetbalCode1.NaN.message}", "No text");
+			errors.rejectValue(ta, "validation.aantalTickets.NaN.message", "No text");
 		}
 		
 		
